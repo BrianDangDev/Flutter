@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginView(),
         '/register': (context) => const RegisterView(),
+        '/notes':(context) =>  const NoteView(),
       },
     );
   }
@@ -81,17 +82,18 @@ class _NoteViewState extends State<NoteView> {
         title: const Text('Main UI'),
         actions: [
           PopupMenuButton<MenuAcion>(
-            onSelected: (value) async{
-              switch(value){
+            onSelected: (value) async {
+              switch (value) {
                 case MenuAcion.logout:
-                final shouldLogout = await showLogOutDialog(context);
-                if(shouldLogout){
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushNamedAndRemoveUntil('/login',(_)=>false,);
-
-                }
-                break;
-
+                  final shouldLogout = await showLogOutDialog(context);
+                  if (shouldLogout) {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login',
+                      (_) => false,
+                    );
+                  }
+                  break;
               }
             },
             itemBuilder: (context) {
@@ -118,12 +120,16 @@ Future<bool> showLogOutDialog(BuildContext context) {
         title: const Text('Sign Out'),
         content: const Text('Are you sure'),
         actions: [
-          TextButton(onPressed: () {
-            Navigator.of(context).pop(false);
-          }, child: const Text('Cancel')),
-          TextButton(onPressed: () {
-             Navigator.of(context).pop(true);
-          }, child: const Text('Log out')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancel')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Log out')),
         ],
       );
     },

@@ -4,6 +4,8 @@ import 'dart:developer' as devtools show log;
 
 import 'package:flutterapps/constants/routes.dart';
 
+import '../ultilities/show_error_dialog.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
@@ -53,20 +55,41 @@ class _RegisterViewState extends State<RegisterView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential =
-                    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                await FirebaseAuth.instance.createUserWithEmailAndPassword(
                   email: email,
                   password: password,
                 );
-                devtools.log(userCredential.toString());
+
+                final user = FirebaseAuth.instance.currentUser;
+                await user?.sendEmailVerification();
+                Navigator.of(context).pushNamed(verifyEmailRoute);
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'Weak password') {
-                  devtools.log('Weak password');
+                  await ShowErrorDialog(
+                    context,
+                    'Weak Password',
+                  );
                 } else if (e.code == 'email-already-in-use') {
-                  devtools.log('Email is already in used');
+                  await ShowErrorDialog(
+                    context,
+                    'Email is already in use',
+                  );
                 } else if (e.code == 'invalid-email') {
-                  devtools.log('Invalid email enterd');
+                  await ShowErrorDialog(
+                    context,
+                    'Invalid email entered',
+                  );
+                } else {
+                  await ShowErrorDialog(
+                    context,
+                    'Error: ${e.code}',
+                  );
                 }
+              } catch (e) {
+                await ShowErrorDialog(
+                  context,
+                  e.toString(),
+                );
               }
             },
             child: const Text('Register'),

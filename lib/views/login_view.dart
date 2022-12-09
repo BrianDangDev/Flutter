@@ -75,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
                   context,
                   'User not found',
                 );
-              } on WrongPassworddAuthException {
+              } on WrongPasswordAuthException {
                 await ShowErrorDialog(
                   context,
                   'Wrong Credentials',

@@ -2,7 +2,7 @@
 
 class UserNotFoundAuthException implements Exception {}
 
-class WrongPassworddAuthException implements Exception {}
+class WrongPasswordAuthException implements Exception {}
 
 //register exceptions
 

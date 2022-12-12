@@ -4,7 +4,7 @@ import 'package:flutterapps/constants/routes.dart';
 import 'package:flutterapps/services/auth/auth_exceptions.dart';
 import 'package:flutterapps/services/auth/auth_service.dart';
 
-import '../ultilities/show_error_dialog.dart';
+import '../ultilities//dialogs/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -71,17 +71,17 @@ class _LoginViewState extends State<LoginView> {
                   );
                 }
               } on UserNotFoundAuthException {
-                await ShowErrorDialog(
+                await showErrorDialog(
                   context,
                   'User not found',
                 );
               } on WrongPasswordAuthException {
-                await ShowErrorDialog(
+                await showErrorDialog(
                   context,
                   'Wrong Credentials',
                 );
               } on GenericAuthException {
-                await ShowErrorDialog(
+                await showErrorDialog(
                   context,
                   'Authentication Error',
                 );
